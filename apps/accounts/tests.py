@@ -31,11 +31,18 @@ from registration.models import RegistrationProfile
 from accounts.models import UserProfile
 from accounts import forms
 
-USER_DATA = dict(
-    username='alice',
-    password='secret',
-    email='alice@example.com',
-)
+USER_DATA = [
+    dict(
+        username='alice',
+        password='secret',
+        email='alice@example.com',
+    ),
+    dict(
+        username='bob',
+        password='secret',
+        email='bob@example.com',
+    ),
+]
 
 
 class AccountsTestCase(TestCase):
@@ -45,8 +52,10 @@ class AccountsTestCase(TestCase):
     '''
 
     def setUp(self):
-        self.sample_user = RegistrationProfile.objects.create_inactive_user(**USER_DATA)
-        self.sample_profile = self.sample_user.userprofile_set.get()
+        self.sample_user1 = RegistrationProfile.objects.create_inactive_user(**USER_DATA[0])
+        self.sample_profile1 = self.sample_user1.userprofile_set.get()
+        self.sample_user2 = RegistrationProfile.objects.create_inactive_user(**USER_DATA[1])
+        self.sample_profile2 = self.sample_user2.userprofile_set.get()
 
 
 class AccountsModelTests(AccountsTestCase):
@@ -59,7 +68,7 @@ class AccountsModelTests(AccountsTestCase):
         Test that a ``UserProfile`` is created for a new user.
         
         '''
-        self.assertEqual(UserProfile.objects.count(), 1)
+        self.assertEqual(UserProfile.objects.count(), 2)
 
 
 class AccountsFormTests(AccountsTestCase):
@@ -68,10 +77,9 @@ class AccountsFormTests(AccountsTestCase):
 
     '''
 
-    def test_login(self):
+    def test_login_form(self):
         '''
         Tests for logins
-
         '''
         error = (
             '__all__',
@@ -105,16 +113,94 @@ class AccountsFormTests(AccountsTestCase):
             self.failIf(form.is_valid())
             self.assertEqual(form.errors[invalid_dict['error'][0]][0], invalid_dict['error'][1])
         form = forms.LoginForm(data={
-            'username': USER_DATA['username'],
-            'password': USER_DATA['password'],
+            'username': USER_DATA[0]['username'],
+            'password': USER_DATA[0]['password'],
         })
         form = forms.LoginForm(data={
-            'username': USER_DATA['username'],
-            'password': USER_DATA['password'],
+            'username': USER_DATA[0]['username'],
+            'password': USER_DATA[0]['password'],
             'keep_signed_in': False,
         })
         form = forms.LoginForm(data={
-            'username': USER_DATA['username'],
-            'password': USER_DATA['password'],
+            'username': USER_DATA[0]['username'],
+            'password': USER_DATA[0]['password'],
             'keep_signed_in': True,
         })
+
+    def test_user_account_form(self):
+        '''
+        Tests for account editing.
+        We will use the sample_user1
+        '''
+        invalid_data_dicts = [
+            dict(
+                data = dict (
+                    email = 'bob@example.com',
+                ),
+                error = (
+                    'email',
+                    'An account with that email address already exists.',
+                ),
+            ),
+        ]
+        for invalid_dict in invalid_data_dicts:
+            form = forms.UserAccountForm(instance=self.sample_user1, data=invalid_dict['data'])
+            self.failIf(form.is_valid())
+            self.assertEqual(form.errors[invalid_dict['error'][0]][0], invalid_dict['error'][1])
+        # Change email address
+        form = forms.UserAccountForm(instance=self.sample_user1, data={
+            'email': 'alice1@example.com',
+        })
+        self.failUnless(form.is_valid())
+        # Change name
+        form = forms.UserAccountForm(instance=self.sample_user1, data={
+            'first_name': 'Alice',
+            'last_name': 'Smith',
+        })
+        self.failUnless(form.is_valid())
+
+
+class AccountsViewTests(AccountsTestCase):
+    '''
+    Tests for the views included in django-registration.
+
+    '''
+
+    def test_index_view(self):
+        response = self.client.get(reverse('accounts-index'))
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['in_account_home'])
+
+    def test_postauthcmd_view(self):
+        response = self.client.get(reverse('accounts-postauthcmd'))
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['post_auth_url'])
+
+    def test_login_view(self):
+        # Activate sample_user1
+        self.sample_user1.is_active = True
+        self.sample_user1.save()
+        # Test showing login form
+        response = self.client.get(reverse('accounts-login'))
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['form'])
+        # Test login post
+        response = self.client.post(
+            reverse('accounts-login'),
+            data = {
+                'username': USER_DATA[0]['username'],
+                'password': USER_DATA[0]['password'],
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver%s' % reverse('accounts-postauthcmd'))
+        # Test invalid login
+        response = self.client.post(
+            reverse('accounts-login'),
+            data = {
+                'username': USER_DATA[0]['username'],
+                'password': 'invalid',
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['form'].errors)
