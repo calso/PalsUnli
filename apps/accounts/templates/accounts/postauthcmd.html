@@ -1,0 +1,9 @@
+{%extends "base.html"%}
+
+{% block content %}
+	Redirecting
+	<a href="{{ post_auth_url }}">Next</a>
+	<script type="text/javascript">
+		setTimeout('window.location.href="{{post_auth_url}}"', 500);
+	</script>
+{% endblock %}
