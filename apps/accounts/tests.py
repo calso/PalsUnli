@@ -166,6 +166,18 @@ class AccountsViewTests(AccountsTestCase):
 
     '''
 
+    def login(self):
+        self.client.login(
+            username = USER_DATA[0]['username'],
+            password = USER_DATA[0]['password'],
+        )
+
+    def setUp(self):
+        super(AccountsViewTests, self).setUp()
+        # Activate sample_user1
+        self.sample_user1.is_active = True
+        self.sample_user1.save()
+
     def test_index_view(self):
         response = self.client.get(reverse('accounts-index'))
         self.assertEqual(response.status_code, 200)
@@ -177,9 +189,6 @@ class AccountsViewTests(AccountsTestCase):
         self.failUnless(response.context['post_auth_url'])
 
     def test_login_view(self):
-        # Activate sample_user1
-        self.sample_user1.is_active = True
-        self.sample_user1.save()
         # Test showing login form
         response = self.client.get(reverse('accounts-login'))
         self.assertEqual(response.status_code, 200)
@@ -204,3 +213,61 @@ class AccountsViewTests(AccountsTestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.failUnless(response.context['form'].errors)
+
+    def test_logout_view(self):
+        self.login()
+        response = self.client.get(reverse('accounts-logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], 'http://testserver%s' % reverse('accounts-postauthcmd'))
+
+    def test_edit_view(self):
+        self.login()
+        # Get the account edit form
+        response = self.client.get(reverse('accounts-edit'))
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['form'])
+        # Edit account
+        response = self.client.post(
+            reverse('accounts-edit'),
+            data = {
+                'email': 'alice1@example.com',
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['form'])
+        self.failIf(response.context['form'].errors)
+        # Edit account using an invalid email
+        response = self.client.post(
+            reverse('accounts-edit'),
+            data = {
+                'email': USER_DATA[1]['email'],
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['form'])
+        self.failUnless(response.context['form'].errors)
+        self.assertEqual(response.context['form'].errors['email'][0], 'An account with that email address already exists.')
+
+    def test_details_view(self):
+        self.login()
+        # Get the account edit form
+        response = self.client.get(reverse('accounts-details', args=(self.sample_user1.pk, )))
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['user'])
+        self.failUnless(response.context['on_user_details_page'])
+
+    def test_user_confirm_email_view(self):
+        from django.utils.http import int_to_base36
+        from django.contrib.auth.tokens import default_token_generator
+        self.login()
+        # Test user email confirmation
+        response = self.client.get(reverse(
+            'accounts-user-confirm-email',
+            args=(
+                int_to_base36(self.sample_user1.pk),
+                default_token_generator.make_token(self.sample_user1)
+            )
+        ))
+        self.assertEqual(response.status_code, 200)
+        self.failUnless(response.context['user'])
+        self.failUnless(response.context['valid_link'])
