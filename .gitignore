@@ -17,6 +17,7 @@
 local_*.py
 bak
 cache
+res
 #migrations
 Session.vim
 tmp
