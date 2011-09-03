@@ -1,0 +1,14 @@
+{%load i18n%}{%autoescape off%}{%blocktrans%}
+
+Welcome to {{ site_name }}.
+
+You are receiving this email because you have just signed up for an account with us. Before we can activate your account, we need to confirm your email address.{%endblocktrans%}
+
+{%trans "Please click on the link below to confirm your email address:"%}
+{%block reset_link%}
+{{protocol}}://{{domain}}{%url registration_activate activation_key %}
+{%endblock%}
+
+{%blocktrans%}If you did not create an account on {{ site_name }}, please disregard this email.{%endblocktrans%}
+
+{%blocktrans%}The {{site_name}} team{%endblocktrans%}{%endautoescape%}

@@ -12,7 +12,6 @@ import datetime
 
 import accounts
 from accounts.forms import LoginForm
-from utils import json
 
 def index(request):
     '''
@@ -99,6 +98,9 @@ def login(request, template_name='signin.html'):
                 # Session expires when user closes browser.
                 request.session.set_expiry(0)
             if request.GET.get('ajax'):
+                pass
+                '''
+                from utils import json
                 return HttpResponse(
                     json.get_json(
                         request,
@@ -108,10 +110,14 @@ def login(request, template_name='signin.html'):
                     ),
                     content_type=json.get_response_mimetype(request)
                 )
+                '''
             else:
                 return accounts.post_auth_redirect(request)
         else:
             if request.GET.get('ajax'):
+                pass
+                '''
+                from utils import json
                 return HttpResponse(
                     json.get_json(
                         request,
@@ -121,6 +127,7 @@ def login(request, template_name='signin.html'):
                     ),
                     content_type=json.get_response_mimetype(request)
                 )
+                '''
     else:
         form = LoginForm()
 

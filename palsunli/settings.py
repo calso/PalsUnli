@@ -122,11 +122,19 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
+    'profiles',
+    'accounts',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+# Settings for django-registration
+ACCOUNT_ACTIVATION_DAYS = 10
+
+# Settings for django-profiles
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

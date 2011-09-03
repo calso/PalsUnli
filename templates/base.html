@@ -1,0 +1,171 @@
+{% load i18n %}<!doctype html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>	<html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>	<html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>	<html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+		 Remove this if you use the .htaccess -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>{% block title %}Road Grid{% endblock %} | Metro Manila Traffic</title>
+	<meta name="description" content="Metro Manila Traffic">
+	<meta name="author" content="Eman Calso, Deon Fernandez">
+
+	<!--	Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+	<link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico">
+	<link rel="apple-touch-icon" href="{{ STATIC_URL }}apple-touch-icon.png">
+
+	<!--Load Ubuntu font family-->
+	<!--<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>-->
+
+	<!-- CSS : implied media="all" -->
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?v=0.06">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/960.css?v=0.06">
+	<link type="text/css" href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.14.custom.css" rel="Stylesheet" />	
+
+	<!-- Uncomment if you are specifically targeting less enabled mobile browsers
+	<link rel="stylesheet" media="handheld" href="css/handheld.css?v=0.06">	-->
+ 
+	<!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+	<script src="{{ STATIC_URL }}js/libs/modernizr-1.6.min.js"></script>
+
+</head>
+
+<body>
+	<div id="header-container" class="container_16 topnav ui-widget-header ui-corner-bottom">
+		<header>
+			<div class="grid_6 left">
+				<a class="fg-button ui-state-default ui-corner-all"  href="{{ STATIC_URL }}about.html" title="About Us" id="about-link"><div class="ui-icon ui-icon-help"></div>About</a>
+				{% if request.path != '/' %}<a class="fg-button ui-state-default ui-corner-all" href="/" title="Metro Manila Traffic Home"><div class="ui-icon ui-icon-home"></div>Roads</a>{% endif %}
+			</div>
+			<div class="grid_4 center">
+				<h2>
+				{% block page_title %}Roads{% endblock %}
+				</h2>
+			</div>
+			<div class="grid_6 right">
+				{% if user.is_anonymous %}
+				<a class="fg-button ui-state-default ui-corner-all"  href="{% url accounts-login %}?next={{ request.path }}" title="Login"><div class="ui-icon ui-icon-person"></div>Login</a></li>
+				{% else %}
+				{% if road %}
+				<a class="fg-button ui-state-default ui-corner-all"  href="{% url edit_road road.slug %}" title="Update Traffic"><div class="ui-icon ui-icon-pencil"></div>Update</a></li>
+				{% endif %}
+				<a class="fg-button ui-state-default ui-corner-all"  href="{% url accounts-edit %}" title="Profile for {{ user }}"><div class="ui-icon ui-icon-person"></div>Profile</a></li>
+				<a class="fg-button ui-state-default ui-corner-all"  href="{% url accounts-logout %}?next={{ request.path }}" title="Logout"><div class="ui-icon ui-icon-power"></div>Logout</a></li>
+				{% endif %}
+			</div>
+			<div class="clear">&nbsp;</div>
+		</header>
+	</div>
+	<div id="message-container" class="container_16">
+			{% if messages %}
+			<div id="messages">
+				<span id="clear-all-messages">
+					<a href="#"><small>{% trans "clear all" %}</small></a>
+				</span>
+				<ul>
+					{% for message in messages %}
+					<li id="message_{{ forloop.counter }}" class="message"><a href="#"><small>{% trans "clear" %}</small></a> {{ message }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="clear">&nbsp;</div>
+			{% endif %}
+	</div> <!--! end of #header-container -->
+	<div id="nav-container" class="container_16">
+		<nav>
+			<div class="grid_16">
+				<ul>
+				</ul>
+			</div>
+			<div class="clear">&nbsp;</div>
+		</nav>
+	</div> <!--! end of #nav-container -->
+	<div id="content-container" class="container_16">
+		{% block main %}
+		{% block content %}
+		{% endblock %}
+		<div class="clear">&nbsp;</div>
+		{% endblock %}
+		<div class="clear">&nbsp;</div>
+		<div id="about-dialog" title="About Metro Manila Traffic"></div>
+	</div> <!--! end of #content-container -->
+	<div id="footer-container" class="container_16">
+		<footer>
+			<div class="grid_12" id="footer">
+			{% block footer %}
+			{% endblock %}
+			<p id="copyright">© <a href="mailto:metromanilatraffic@gmail.com">Metro Manila Traffic</a>. Some rights reserved.</p>
+			</div>
+			<div id="donate">
+			</div>
+			<div class="clear">&nbsp;</div>
+		</footer>
+	</div> <!--! end of #footer-container -->
+
+
+	<!-- Javascript at the bottom for fast page loading -->
+
+	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+	{% comment %}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+	{% endcomment %}
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="{{ STATIC_URL }}js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
+	<!--<script src="{{ STATIC_URL }}js/libs/jquery.anchorHandler.js"></script>-->
+	<script src="{{ STATIC_URL }}js/libs/jquery.ba-hashchange.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.14.custom.min.js"></script>
+	
+	
+	<!-- scripts concatenated and minified via ant build script-->
+	<script src="{{ STATIC_URL }}js/plugins.js"></script>
+	<script src="{{ STATIC_URL }}js/script.js"></script>
+	<!-- end concatenated and minified scripts-->
+	
+	
+	<!--[if lt IE 7 ]>
+	<script src="{{ STATIC_URL }}js/libs/dd_belatedpng.js"></script>
+	<script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+	<![endif]-->
+
+	<!-- yui profiler and profileviewer - remove for production -->
+	<!--<script src="{{ STATIC_URL }}js/profiling/yahoo-profiling.min.js"></script>-->
+	<!--<script src="{{ STATIC_URL }}js/profiling/config.js"></script>-->
+	<!-- end profiling code -->
+
+
+	<!-- asynchronous google analytics: mathiasbynens.be/notes/async-analytics-snippet 
+		 change the UA-XXXXX-X to be your site's ID -->
+	<!--
+	<script>
+	 var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+	 (function(d, t) {
+	var g = d.createElement(t),
+		s = d.getElementsByTagName(t)[0];
+	g.async = true;
+	g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g, s);
+	 })(document, 'script');
+	</script>
+	-->
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var loadDonate = function () {
+				$('#donate').load('{{ STATIC_URL }}donate.html');
+			};
+			setTimeout(loadDonate, 100);
+		});
+	</script>
+	{% block extrascripts %}
+	{% endblock %}
+</body>
+</html>
