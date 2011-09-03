@@ -1,0 +1,11 @@
+from settings import *
+
+DEBUG = True
+
+DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+DATABASES['default']['NAME'] = os.path.join(PROJECT_DIR, 'test.db')
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'emails.log'
+
+TIME_ZONE = 'Asia/Manila'
