@@ -13,9 +13,9 @@
 		 Remove this if you use the .htaccess -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>{% block title %}Road Grid{% endblock %} | Metro Manila Traffic</title>
-	<meta name="description" content="Metro Manila Traffic">
-	<meta name="author" content="Eman Calso, Deon Fernandez">
+	<title>{% block title %}Road Grid{% endblock %} | {{ site_name }}</title>
+	<meta name="description" content="{{ site_name }}">
+	<meta name="author" content="Eman Calso, Katrina Calso, Deon Fernandez">
 
 	<!--	Mobile viewport optimized: j.mp/bplateviewport -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +45,7 @@
 		<header>
 			<div class="grid_6 left">
 				<a class="fg-button ui-state-default ui-corner-all"  href="{{ STATIC_URL }}about.html" title="About Us" id="about-link"><div class="ui-icon ui-icon-help"></div>About</a>
-				{% if request.path != '/' %}<a class="fg-button ui-state-default ui-corner-all" href="/" title="Metro Manila Traffic Home"><div class="ui-icon ui-icon-home"></div>Roads</a>{% endif %}
+				{% if request.path != '/' %}<a class="fg-button ui-state-default ui-corner-all" href="/" title="{{ site_name }} Home"><div class="ui-icon ui-icon-home"></div>Roads</a>{% endif %}
 			</div>
 			<div class="grid_4 center">
 				<h2>
@@ -97,14 +97,14 @@
 		<div class="clear">&nbsp;</div>
 		{% endblock %}
 		<div class="clear">&nbsp;</div>
-		<div id="about-dialog" title="About Metro Manila Traffic"></div>
+		<div id="about-dialog" title="About {{ site_name }}"></div>
 	</div> <!--! end of #content-container -->
 	<div id="footer-container" class="container_16">
 		<footer>
 			<div class="grid_12" id="footer">
 			{% block footer %}
 			{% endblock %}
-			<p id="copyright">© <a href="mailto:metromanilatraffic@gmail.com">Metro Manila Traffic</a>. Some rights reserved.</p>
+			<p id="copyright">© <a href="mailto:metromanilatraffic@gmail.com">{{ site_name }}</a>. Some rights reserved.</p>
 			</div>
 			<div id="donate">
 			</div>
