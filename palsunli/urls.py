@@ -17,4 +17,5 @@ urlpatterns = patterns('',
     url(r'^registration/', include('registration.urls')),
     url(r'^profiles/', include('profiles.urls')),
     url(r'^accounts/', include('accounts.urls')),
+    url(r'^phone/', include('phone.urls')),
 )

@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'profiles',
     'accounts',
     'pals',
+    'phone',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -133,6 +134,7 @@ INSTALLED_APPS = (
 )
 LETTUCE_APPS = (
     'accounts',
+    'phone',
 )
 
 # Settings for django-registration
