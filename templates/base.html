@@ -13,7 +13,7 @@
 		 Remove this if you use the .htaccess -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>{% block title %}Road Grid{% endblock %} | {{ site_name }}</title>
+	<title>{% block title %}PalsUnli{% endblock %} | {{ site_name }}</title>
 	<meta name="description" content="{{ site_name }}">
 	<meta name="author" content="Eman Calso, Katrina Calso, Deon Fernandez">
 
@@ -45,12 +45,12 @@
 		<header>
 			<div class="grid_6 left">
 				<a class="fg-button ui-state-default ui-corner-all"  href="{{ STATIC_URL }}about.html" title="About Us" id="about-link"><div class="ui-icon ui-icon-help"></div>About</a>
-				{% if request.path != '/' %}<a class="fg-button ui-state-default ui-corner-all" href="/" title="{{ site_name }} Home"><div class="ui-icon ui-icon-home"></div>Roads</a>{% endif %}
+				{% if request.path != '/' %}<a class="fg-button ui-state-default ui-corner-all" href="/" title="{{ site_name }} Home"><div class="ui-icon ui-icon-home"></div>PalsUnli</a>{% endif %}
 			</div>
 			<div class="grid_4 center">
-				<h2>
-				{% block page_title %}Roads{% endblock %}
-				</h2>
+				<h1>
+				{% block page_title %}PalsUnli{% endblock %}
+				</h1>
 			</div>
 			<div class="grid_6 right">
 				{% if user.is_anonymous %}
