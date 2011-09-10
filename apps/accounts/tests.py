@@ -53,6 +53,8 @@ class AccountsTestCase(TestCase):
 
     def setUp(self):
         self.sample_user1 = RegistrationProfile.objects.create_inactive_user(**USER_DATA[0])
+        self.sample_user1.is_active = True
+        self.sample_user1.save()
         self.sample_profile1 = self.sample_user1.userprofile_set.get()
         self.sample_user2 = RegistrationProfile.objects.create_inactive_user(**USER_DATA[1])
         self.sample_profile2 = self.sample_user2.userprofile_set.get()
@@ -112,20 +114,26 @@ class AccountsFormTests(AccountsTestCase):
             form = forms.LoginForm(data=invalid_dict['data'])
             self.failIf(form.is_valid())
             self.assertEqual(form.errors[invalid_dict['error'][0]][0], invalid_dict['error'][1])
+        # test valid data
         form = forms.LoginForm(data={
             'username': USER_DATA[0]['username'],
             'password': USER_DATA[0]['password'],
         })
+        self.failUnless(form.is_valid())
         form = forms.LoginForm(data={
             'username': USER_DATA[0]['username'],
             'password': USER_DATA[0]['password'],
             'keep_signed_in': False,
         })
+        form.is_valid()
+        print form.errors
+        self.failUnless(form.is_valid())
         form = forms.LoginForm(data={
             'username': USER_DATA[0]['username'],
             'password': USER_DATA[0]['password'],
             'keep_signed_in': True,
         })
+        self.failUnless(form.is_valid())
 
     def test_user_account_form(self):
         '''
