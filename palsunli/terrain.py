@@ -1,14 +1,31 @@
 from lettuce import *
 from lettuce.django import django_url
 from lxml import html
+
+from django.test.utils import setup_test_environment, teardown_test_environment
+from django.core.management import call_command
+from django.db import connection
+from django.conf import settings
+
 from django.test.client import Client
 from django.contrib.auth.models import User
 
+# Reference: http://cilliano.com/blog/2011/02/07/django-bdd-with-lettuce-and-splinter/
 
 @before.harvest
-def prepare_browser(variables):
+def initial_setup(server):
+    call_command('syncdb', interactive=False, verbosity=0)
+    call_command('flush', interactive=False, verbosity=0)
+    call_command('migrate', interactive=False, verbosity=0)
+    call_command('loaddata', 'all', verbosity=0)
+    setup_test_environment()
     #if variables.get('run_server', False):
     world.browser = Client()
+
+@after.harvest
+def cleanup(server):
+    connection.creation.destroy_test_db(settings.DATABASES['default']['NAME'])
+    teardown_test_environment()
 
 @step(u'I access the url "([^"]*)"')
 def access_url(step, url):
