@@ -22,9 +22,10 @@ class NetworkTestCase(TestCase):
         """
         Setup necessary properties for Network tests
         """
+        self.smart = Network.objects.create(name='Smart')
 
 
-class NetworkTestCase(NetworkTestCase):
+class NetworkModelTestCase(NetworkTestCase):
     """
     Tests for model-oriented functionality
     """
