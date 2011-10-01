@@ -88,3 +88,9 @@ class PhoneTestCase(TestCase):
         )
         self.user1.is_active = True
         self.user1.save()
+
+
+class PhoneModelTestCase(PhoneTestCase):
+    """
+    Tests for model-oriented functionality of the Phone model
+    """
