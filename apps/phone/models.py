@@ -10,3 +10,9 @@ class Phone(models.Model):
     user = models.ForeignKey(User)
     number = models.CharField(max_length=16, unique=True)
     network = models.ForeignKey(Network)
+
+    def save(self, **kw):
+        """
+        Override default save method
+        """
+        return super(Phone, self).save(**kw)
