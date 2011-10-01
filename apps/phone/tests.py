@@ -37,5 +37,6 @@ class NetworkModelTestCase(NetworkTestCase):
         smart = Network.objects.create(name='Smart')
         globe = Network.objects.create(name='Globe')
         sun = Network.objects.create(name='Sun')
+        red = Network.objects.create(name='Red')
 
 
