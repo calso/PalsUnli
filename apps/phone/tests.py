@@ -35,3 +35,16 @@ class NetworkTestCase(NetworkTestCase):
         """
         smart = Network.objects.create(name='Smart')
 
+    def test_create_network(self):
+        """
+        Test creating a new network
+        """
+        globe = Network.objects.create(name='Globe')
+
+    def test_create_network(self):
+        """
+        Test creating a new network
+        """
+        sun = Network.objects.create(name='Sun')
+
+
