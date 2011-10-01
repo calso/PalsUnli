@@ -42,3 +42,9 @@ class NetworkModelTestCase(NetworkTestCase):
         sun = Network.objects.create(name='Sun')
         red = Network.objects.create(name='Red')
 
+    def test_update_network(self):
+        """
+        Test updating of existing networks
+        """
+        self.smart.name = 'Smart Philippines'
+        self.smart.save()
