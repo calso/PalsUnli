@@ -80,6 +80,7 @@ class PhoneTestCase(TestCase):
         Setup necessary properties for Phone tests
         """
         self.smart = Network.objects.create(name='Smart')
+        self.globe = Network.objects.create(name='Globe')
         # Create a user for our tests
         self.user1 = RegistrationProfile.objects.create_inactive_user(
             username='alice',
@@ -88,6 +89,14 @@ class PhoneTestCase(TestCase):
         )
         self.user1.is_active = True
         self.user1.save()
+
+        self.user2 = RegistrationProfile.objects.create_inactive_user(
+            username='bobby',
+            password='12345',
+            email='bobby@example.com',
+        )
+        self.user2.is_active = True
+        self.user2.save()
 
 
 class PhoneModelTestCase(PhoneTestCase):
@@ -105,3 +114,9 @@ class PhoneModelTestCase(PhoneTestCase):
             number = '+63 918 765 4321'
         )
         self.assertEqual(phone1.number, '9187654321')
+        phone2 = Phone.objects.create(
+            user = self.user2,
+            network = self.globe,
+            number = '0915 765 4020'
+        )
+        self.assertEqual(phone2.number, '9157654020')
