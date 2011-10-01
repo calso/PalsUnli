@@ -5,12 +5,33 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 
+import datetime
+
+from django.conf import settings
 from django.test import TestCase
 
+from phone.models import Network
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+
+class NetworkTestCase(TestCase):
+    """
+    Base class for Network model related test cases.
+    """
+
+    def setUp(self):
         """
-        Tests that 1 + 1 always equals 2.
+        Setup necessary properties for Network tests
         """
-        self.assertEqual(1 + 1, 2)
+
+
+class NetworkTestCase(NetworkTestCase):
+    """
+    Tests for model-oriented functionality
+    """
+
+    def test_create_network(self):
+        """
+        Test creating a new network
+        """
+        smart = Network.objects.create(name='Smart')
+
