@@ -11,7 +11,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from registration.models import RegistrationProfile
-from phone.models import Network
+from phone.models import Network, Phone
 
 
 class NetworkTestCase(TestCase):
@@ -94,3 +94,13 @@ class PhoneModelTestCase(PhoneTestCase):
     """
     Tests for model-oriented functionality of the Phone model
     """
+
+    def test_create_phone(self):
+        """
+        Test creating new phone
+        """
+        phone1 = Phone.objects.create(
+            user = self.user1,
+            network = self.smart,
+            number = '+63 918 765 4321'
+        )
