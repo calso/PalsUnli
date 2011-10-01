@@ -57,3 +57,4 @@ class NetworkModelTestCase(NetworkTestCase):
         Test deleting existing networks
         """
         self.smart.delete()
+        self.globe.delete()
