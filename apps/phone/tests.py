@@ -15,7 +15,7 @@ from phone.models import Network
 
 class NetworkTestCase(TestCase):
     """
-    Base class for Network model related test cases.
+    Base class for Network related test cases.
     """
 
     def setUp(self):
