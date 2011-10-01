@@ -22,6 +22,8 @@ class NetworkTestCase(TestCase):
         """
         Setup necessary properties for Network tests
         """
+        # Create default Smart network that would be a property
+        # of the other test case classes
         self.smart = Network.objects.create(name='Smart')
 
 
@@ -34,9 +36,9 @@ class NetworkModelTestCase(NetworkTestCase):
         """
         Test creating a new network
         """
-        smart = Network.objects.create(name='Smart')
+        # Remove smart because we'll add this as a default property
+        #smart = Network.objects.create(name='Smart')
         globe = Network.objects.create(name='Globe')
         sun = Network.objects.create(name='Sun')
         red = Network.objects.create(name='Red')
-
 
