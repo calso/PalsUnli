@@ -49,8 +49,11 @@ class NetworkModelTestCase(NetworkTestCase):
         """
         self.smart.name = 'Smart Philippines'
         self.smart.save()
-
         self.globe.name = 'Globe Philippines'
         self.globe.save()
 
-
+    def test_delete_network(self):
+        """
+        Test deleting existing networks
+        """
+        self.smart.delete()
