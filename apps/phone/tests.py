@@ -104,3 +104,4 @@ class PhoneModelTestCase(PhoneTestCase):
             network = self.smart,
             number = '+63 918 765 4321'
         )
+        self.assertEqual(phone1.number, '9187654321')
