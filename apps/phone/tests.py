@@ -43,6 +43,15 @@ class NetworkModelTestCase(NetworkTestCase):
         sun = Network.objects.create(name='Sun')
         red = Network.objects.create(name='Red')
 
+    def test_read_network(self):
+        """
+        Test reading network details.
+        """
+        # Test getting network with id=1
+        assert(Network.objects.get(id=1))
+        # Test getting network with name=Globe
+        assert(Network.objects.get(name='Globe'))
+
     def test_update_network(self):
         """
         Test updating of existing networks
