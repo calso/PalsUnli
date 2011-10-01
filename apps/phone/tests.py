@@ -10,6 +10,7 @@ import datetime
 from django.conf import settings
 from django.test import TestCase
 
+from registration.models import RegistrationProfile
 from phone.models import Network
 
 
@@ -79,3 +80,11 @@ class PhoneTestCase(TestCase):
         Setup necessary properties for Phone tests
         """
         self.smart = Network.objects.create(name='Smart')
+        # Create a user for our tests
+        self.user1 = RegistrationProfile.objects.create_inactive_user(
+            username='alice',
+            password='secret',
+            email='alice@example.com',
+        )
+        self.user1.is_active = True
+        self.user1.save()
