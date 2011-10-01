@@ -78,3 +78,4 @@ class PhoneTestCase(TestCase):
         """
         Setup necessary properties for Phone tests
         """
+        self.smart = Network.objects.create(name='Smart')
