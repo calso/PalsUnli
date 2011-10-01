@@ -67,3 +67,14 @@ class NetworkModelTestCase(NetworkTestCase):
         """
         self.smart.delete()
         self.globe.delete()
+
+
+class PhoneTestCase(TestCase):
+    """
+    Base class for Phone related test cases
+    """
+
+    def setUp(self):
+        """
+        Setup necessary properties for Phone tests
+        """
