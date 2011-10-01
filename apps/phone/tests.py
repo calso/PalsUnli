@@ -47,8 +47,8 @@ class NetworkModelTestCase(NetworkTestCase):
         """
         Test reading network details.
         """
-        # Test getting network with id=1
-        assert(Network.objects.get(id=1))
+        # Test getting network with pk=1
+        assert(Network.objects.get(pk=1))
         # Test getting network with name=Globe
         assert(Network.objects.get(name='Globe'))
 
