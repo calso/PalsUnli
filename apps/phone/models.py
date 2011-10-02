@@ -11,6 +11,14 @@ class Phone(models.Model):
     number = models.CharField(max_length=16, unique=True)
     network = models.ForeignKey(Network)
 
+    def __unicode__(self):
+        """
+        Return a unicode representation of the object/entry
+
+        For now, just show the phone number
+        """
+        return self.number
+
     def get_short_number(self):
         value = self.number
         if value.startswith('0') or \
